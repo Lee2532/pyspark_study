@@ -1,0 +1,24 @@
+version: '3'
+services:
+  mysql:
+    image: mysql
+    hostname: mysql
+#    platform: linux/amd64
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=debezium
+      - MYSQL_USER=mysqluser
+      - MYSQL_PASSWORD=mysqlpw
+
+  selenium:
+    image: seleniarm/standalone-chromium:107.0 #m1
+#    image: selenium/standalone-chrome:4.6.0-20221104
+    ports:
+      - 4444:4444
+    restart: always
+    environment:
+      SE_NODE_MAX_SESSIONS: 10
+      SE_NODE_OVERRIDE_MAX_SESSIONS: true # 5개 이상부터 추가
+      SE_SESSION_REQUEST_TIMEOUT: 500
+    shm_size: 2gb

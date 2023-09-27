@@ -49,6 +49,12 @@ class TwitchChat:
         )
         return driver
 
+    def is_duplicate(self, existing_data: list, new_data: dict):
+        for item in existing_data:
+            if item['nickname'] == new_data['nickname'] and item['message'] == new_data['message']:
+                return True
+        return False
+
     def twitch_chat(self):
         driver = self._driver()
         driver.get(self.url)
@@ -76,17 +82,19 @@ class TwitchChat:
 
                     data = asdict(CHATMODEL(**msg))
                     logging.info(data)
-                    result.append(data)
+                    if not self.is_duplicate(result, data):
+                        result.append(data)
 
                 except Exception as e:
                     logging.info(e)
 
-            if len(result) > 100:
+            if len(result) > 500:
                 # data save
                 DBCONN().insert_df("twitch", pd.DataFrame(result))
                 result = []
+                time.sleep(2)
 
-            time.sleep(2)
+            time.sleep(0.5)
 
 
 if __name__ == "__main__":
@@ -95,7 +103,7 @@ if __name__ == "__main__":
         "handongsuk",
         "woowakgood",
         "hanryang1125",
-        "cotton__123",
+        "zilioner",
         "kimdduddi",
         "tmxk319",
         "ayatsunoyuni_stellive",

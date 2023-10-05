@@ -12,8 +12,7 @@ services:
       - MYSQL_PASSWORD=mysqlpw
 
   selenium:
-    image: seleniarm/standalone-chromium:107.0 #m1
-#    image: selenium/standalone-chrome:4.6.0-20221104
+    image: seleniarm/standalone-chromium:107.0
     ports:
       - 4444:4444
     restart: always
